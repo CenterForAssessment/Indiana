@@ -21,6 +21,7 @@ MATH_Data <- read.delim("Data/Base_Files/GrowthModel_File_MATH.txt")
 ELA_Data[['CONTENT_AREA']] <- "ELA"
 MATH_Data[['CONTENT_AREA']] <- "MATHEMATICS"
 ELA_Data[['VALID_CASE']] <- MATH_Data[['VALID_CASE']] <- "VALID_CASE"
+ELA_Data <- subset(ELA_Data, select=names(MATH_Data))
 tmp_Data <- as.data.table(rbind(ELA_Data, MATH_Data))
 
 
@@ -38,7 +39,7 @@ levels(tmp_Data$ACHIEVEMENT_LEVEL) <- c("Did Not Pass", "Pass", "Pass +")
 levels(tmp_Data$SPECIAL_ED_STATUS) <- c("Special Education: No", "Special Education: Yes", "Unknown")
 levels(tmp_Data$ENGLISH_LEARNER_STATUS) <- c("Limited English Proficient: Yes", "Limited English Proficient: No", "Unknown")
 levels(tmp_Data$SOCIO_ECON_STATUS) <- c("Free/Reduced Price Lunch: Yes", "Free/Reduced Price Lunch: No", "Unknown")
-
+tmp_Data$SCALE_SCORE <- as.numeric(tmp_Data$SCALE_SCORE)
 
 ### EMH Level
 
