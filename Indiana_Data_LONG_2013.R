@@ -74,6 +74,7 @@ tmp_Data[which(duplicated(tmp_Data))-1, VALID_CASE := "INVALID_CASE"]
 
 tmp_Data[,STUDENT_ID:=as.character(STUDENT_ID)]
 tmp_Data[['GRADE_ID']] <- as.character(tmp_Data[['GRADE_ID']])
+tmp_Data[['IDOE_SCHOOL_ID']] <- as.character(tmp_Data[['IDOE_SCHOOL_ID']])
 
 Indiana_Data_LONG_2013 <- tmp_Data
 
