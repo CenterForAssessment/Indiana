@@ -12,7 +12,7 @@ require(data.table)
 
 ### Load Indiana_SGP
 
-#load("../Data/Indiana_SGP.Rdata")
+load("../Data/Indiana_SGP.Rdata")
 
 
 ### Create table with straight projections
