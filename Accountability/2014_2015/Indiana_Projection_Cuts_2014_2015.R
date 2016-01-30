@@ -18,7 +18,7 @@ load("../Data/Indiana_SGP.Rdata")
 ### Create table with straight projections
 
 variables.to.get <- c("ID", "P1_PROJ_YEAR_1_CURRENT", "P35_PROJ_YEAR_1_CURRENT", "P65_PROJ_YEAR_1_CURRENT", "SGP_PROJECTION_GROUP")
-Indiana_Projection_Cuts_2014_2015 <- rbindlist(Indiana_SGP@SGP$SGProjections[23:24])[,variables.to.get,with=FALSE][,YEAR:="2014"][,VALID_CASE:="VALID_CASE"]
+Indiana_Projection_Cuts_2014_2015 <- rbindlist(Indiana_SGP@SGP$SGProjections[19:20])[,variables.to.get,with=FALSE][,YEAR:="2014"][,VALID_CASE:="VALID_CASE"]
 setnames(Indiana_Projection_Cuts_2014_2015, "SGP_PROJECTION_GROUP", "CONTENT_AREA")
 setkey(Indiana_Projection_Cuts_2014_2015, VALID_CASE, CONTENT_AREA, YEAR, ID)
 Indiana_Projection_Cuts_2014_2015 <- Indiana_SGP@Data[,c("VALID_CASE", "CONTENT_AREA", "YEAR", "ID", "GRADE"), with=FALSE][Indiana_Projection_Cuts_2014_2015]
