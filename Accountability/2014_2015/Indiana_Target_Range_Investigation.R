@@ -8,13 +8,14 @@
 
 require(SGP)
 require(data.table)
-
+#debug(SGP:::getAchievementLevel)
 
 ### Load 2015 data
 
-#load("../Data/Indiana_SGP_LONG_Data.Rdata")
+load("../../Data/Indiana_SGP_LONG_Data.Rdata")
 Indiana_SGP_LONG_Data_2014_2015 <- Indiana_SGP_LONG_Data[SCHOOL_YEAR %in% c("2014", "2015") & !is.na(SCALE_SCORE)]
 Indiana_SGP_LONG_Data_2014_2015[,ACHIEVEMENT_LEVEL:=NULL]
+Indiana_SGP_LONG_Data_2014_2015[,ACHIEVEMENT_LEVEL_PRIOR:=NULL]
 
 
 ### Modify SGPstateData for ACHIEVEMENT_LEVEL creation
@@ -94,13 +95,40 @@ SGPstateData[["IN"]][["Assessment_Program_Information"]][["Assessment_Transition
         "Pass + 2"="Pass + 2")
 
 
-### prepareSGP
+### create new ACHIEVEMENT_LEVEL and ACHIEVEMENT_LEVEL_PRIOR
+
+## ACHIEVEMENT_LEVEL
 
 Indiana_SGP <- prepareSGP(Indiana_SGP_LONG_Data_2014_2015)
+
+
+## ACHIEVEMENT_LEVEL_PRIOR
+
+Indiana_SGP@Data$YEAR <- as.character(as.numeric(Indiana_SGP@Data$YEAR)-2)
+Indiana_SGP@Data$GRADE <- as.character(as.numeric(Indiana_SGP@Data$GRADE)-1)
+Indiana_SGP@Data <- SGP:::getAchievementLevel(Indiana_SGP@Data, state="IN", achievement.level.name="ACHIEVEMENT_LEVEL_PRIOR", scale.score.name="SCALE_SCORE_PRIOR")
+Indiana_SGP@Data$YEAR <- as.character(as.numeric(Indiana_SGP@Data$YEAR)+2)
+Indiana_SGP@Data$GRADE <- as.character(as.numeric(Indiana_SGP@Data$GRADE)+1)
 
 
 ################################################
 ### Summarize target ranges
 ################################################
 
-#Indiana_SGP_LONG_Data_2015[,mean(SGP_TARGET_3_YEAR_CURRENT, na.rm=TRUE), keyby=list(SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, ACHIEVEMENT_LEVEL_SUBSTATUS)]
+my.tmp <- Indiana_SGP@Data[YEAR=="2015" & !is.na(ACHIEVEMENT_LEVEL_PRIOR),
+    list(MEDIAN_SGP=as.numeric(median(SGP, na.rm=TRUE)), MEAN_SGP=mean(SGP, na.rm=TRUE), SD_SGP=sd(SGP, na.rm=TRUE), COUNT=.N), keyby=list(CONTENT_AREA, GRADE, ACHIEVEMENT_LEVEL_PRIOR, ACHIEVEMENT_LEVEL)]
+
+my.transitions <- list(
+    dnp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 1", 2), ACHIEVEMENT_LEVEL=c("Did Not Pass 1", "Did Not Pass 2")),
+    dnp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 2", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 1", "Did Not Pass 2", "Did Not Pass 3")),
+    dnp3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 3", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 2", "Did Not Pass 3", "Pass 1")),
+    p1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 1", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 3", "Pass 1", "Pass 2")),
+    p2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 2", 3), ACHIEVEMENT_LEVEL=c("Pass 1", "Pass 2", "Pass 3")),
+    p3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 3", 3), ACHIEVEMENT_LEVEL=c("Pass 2", "Pass 3", "Pass + 1")),
+    pp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 1", 3), ACHIEVEMENT_LEVEL=c("Pass 3", "Pass + 1", "Pass + 2")),
+    pp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 2", ), ACHIEVEMENT_LEVEL=c("Pass + 1", "Pass + 2")))
+
+my.transitions.long <- data.table(rbindlist(my.transitions), key=c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
+setkeyv(my.tmp, c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
+
+final.transitions <- data.table(my.tmp[my.transitions.long], key=c("CONTENT_AREA", "GRADE", "ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
