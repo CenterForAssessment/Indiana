@@ -20,7 +20,7 @@ load("Data/Indiana_SGP.Rdata")
 Indiana_SGP <- updateSGP(
 			Indiana_SGP,
 			Indiana_Data_LONG_2016,
-			steps=c("prepareSGP", "analyzeSGP", "combineSGP", "outputSGP")
+			steps=c("prepareSGP", "analyzeSGP", "combineSGP", "outputSGP"),
 			sgp.percentiles=TRUE,
 			sgp.projections=TRUE,
 			sgp.projections.lagged=TRUE,
