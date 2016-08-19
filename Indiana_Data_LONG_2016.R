@@ -37,4 +37,4 @@ Indiana_Data_LONG_2016[which(duplicated(Indiana_Data_LONG_2016))-1, VALID_CASE :
 
 ### Save results
 
-#save(Indiana_Data_LONG_2016, file="Data/Indiana_Data_LONG_2016.Rdata")
+save(Indiana_Data_LONG_2016, file="Data/Indiana_Data_LONG_2016.Rdata")

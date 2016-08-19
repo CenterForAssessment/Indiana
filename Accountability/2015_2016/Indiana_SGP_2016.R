@@ -11,8 +11,8 @@ require(SGP)
 
 ### Load data
 
-load("Data/Indiana_Data_LONG_2016.Rdata")
-load("Data/Indiana_SGP.Rdata")
+load("../Dropbox/Indiana/Data/Indiana_Data_LONG_2016.Rdata")
+load("../Dropbox/Indiana/Data/Indiana_SGP.Rdata")
 
 
 ### updateSGP
@@ -28,10 +28,10 @@ Indiana_SGP <- updateSGP(
 			sgp.projections.baseline=FALSE,
 			sgp.projections.lagged.baseline=FALSE,
 			save.intermediate.results=TRUE,
-			sgp.target.scale.scores=TRUE),
+			sgp.target.scale.scores=TRUE,
 			parallel.config=list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=2, PROJECTIONS=2, LAGGED_PROJECTIONS=2, SGP_SCALE_SCORE_TARGETS=2, SUMMARY=2, GA_PLOTS=2, SG_PLOTS=1)))
 
 
 ### Save results
 
-save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
+#save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
