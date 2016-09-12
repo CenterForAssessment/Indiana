@@ -1,0 +1,20 @@
+
+Started prepareSGP Wednesday August 31 11:05:41 2016
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2015_2016 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Wednesday August 31 11:05:51 2016 in 9.307 Seconds 
+
+
+Started prepareSGP Wednesday August 31 12:12:46 2016
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2015_2016 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Wednesday August 31 12:12:54 2016 in 8.499 Seconds 
+

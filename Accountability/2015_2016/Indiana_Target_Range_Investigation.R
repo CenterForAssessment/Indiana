@@ -12,7 +12,7 @@ require(data.table)
 
 ### Load 2015 data
 
-#load("Data/Indiana_SGP_LONG_Data.Rdata")
+#load("../../Data/Indiana_SGP_LONG_Data.Rdata")
 #Indiana_SGP_LONG_Data_2015_2016 <- Indiana_SGP_LONG_Data[SCHOOL_YEAR %in% c("2015", "2016") & !is.na(SCALE_SCORE)]
 #Indiana_SGP_LONG_Data_2015_2016[,ACHIEVEMENT_LEVEL:=NULL]
 #Indiana_SGP_LONG_Data_2015_2016[,ACHIEVEMENT_LEVEL_PRIOR:=NULL]
@@ -107,9 +107,9 @@ target.ranges.1 <- list(
     PASS_PLUS_2=list(c(0,43,50), c(44,61,100), c(62,99,150))
     )
 target.ranges.2 <- list(
-    DID_NOT_PASS_1=list(c(0,25,0), c(26,59,75), c(60,99,200)),
-    DID_NOT_PASS_2=list(c(0,25,0), c(26,59,75), c(60,99,200)),
-    DID_NOT_PASS_3=list(c(0,25,0), c(26,59,75), c(60,99,200)),
+    DID_NOT_PASS_1=list(c(0,25,0), c(26,54,75), c(55,99,175)),
+    DID_NOT_PASS_2=list(c(0,25,0), c(26,54,75), c(55,99,175)),
+    DID_NOT_PASS_3=list(c(0,25,0), c(26,54,75), c(55,99,175)),
     PASS_1=list(c(0,43,50), c(44,56,100), c(57,99,150)),
     PASS_2=list(c(0,44,50), c(45,59,100), c(60,99,150)),
     PASS_3=list(c(0,45,50), c(46,61,100), c(62,99,150)),
