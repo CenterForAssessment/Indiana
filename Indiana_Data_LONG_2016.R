@@ -33,7 +33,7 @@ Indiana_Data_LONG_2016[,SCALE_SCORE:=as.numeric(SCALE_SCORE)]
 
 setkey(Indiana_Data_LONG_2016, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID, SCALE_SCORE)
 setkey(Indiana_Data_LONG_2016, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID)
-Indiana_Data_LONG_2016[which(duplicated(Indiana_Data_LONG_2016))-1, VALID_CASE := "INVALID_CASE"]
+Indiana_Data_LONG_2016[which(duplicated(Indiana_Data_LONG_2016, by=key(Indiana_Data_LONG_2016)))-1, VALID_CASE:="INVALID_CASE"]
 
 ### Save results
 
