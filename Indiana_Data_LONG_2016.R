@@ -11,13 +11,13 @@ require(data.table)
 
 ### Load base data files
 
-Indiana_Data_LONG_2016 <- fread("Data/Base_Files/ISTEP_2016_Damian_Export_Initial.csv", colClasses=rep("character", 9))
+Indiana_Data_LONG_2016 <- fread("Data/Base_Files/ISTEP_2016_Damian_Export_20160919.csv", colClasses=rep("character", 7))
 
 
 ### Prepare Data
 
-setnames(Indiana_Data_LONG_2016, c("IDOE_CORPORATION_ID", "IDOE_SCHOOL_ID", "STN", "STUDENT_ID", "GRADE_ID", "ELA_SCALE", "MATH_SCALE", "SCIENCE_SCALE", "SS_SCALE"))
-Indiana_Data_LONG_2016[,c("STN", "SCIENCE_SCALE", "SS_SCALE"):=NULL]
+setnames(Indiana_Data_LONG_2016, c("IDOE_CORPORATION_ID", "IDOE_SCHOOL_ID", "STN", "STUDENT_ID", "GRADE_ID", "ELA_SCALE", "MATH_SCALE"))
+Indiana_Data_LONG_2016[,"STN":=NULL]
 Indiana_Data_LONG_2016 <- rbindlist(list(Indiana_Data_LONG_2016[,c(1:5), with=FALSE], Indiana_Data_LONG_2016[,c(1:4,6), with=FALSE]))
 setnames(Indiana_Data_LONG_2016, "ELA_SCALE", "SCALE_SCORE")
 
