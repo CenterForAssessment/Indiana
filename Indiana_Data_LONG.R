@@ -65,7 +65,7 @@ tmp_Data[['VALID_CASE']][tmp_Data$STUDENT_ID < 0] <- "INVALID_CASE"
 
 setkey(tmp_Data, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID, SCALE_SCORE)
 setkey(tmp_Data, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID)
-invisible(tmp_Data[which(duplicated(tmp_Data))-1, VALID_CASE := "INVALID_CASE"]) 
+invisible(tmp_Data[which(duplicated(tmp_Data, by=key(tmp_Data)))-1, VALID_CASE := "INVALID_CASE"]) 
 
 
 ### Final cleanup
