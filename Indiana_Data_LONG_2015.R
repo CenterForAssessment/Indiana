@@ -10,12 +10,12 @@ require(data.table)
 
 ### Load base data files
 
-fixed.widths <- c(1, 10, 30, 4, 30, 4, 30, 7, 2, 30, 2, 8, 5, 2, 6, 12, 9, 1, 1, 6, 3, 1, 1, 1, 1, 1, 1, 1, 2, 
-	              6, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 15, 20, 1, 15, 1, 1, 1, 
-	              1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 40, 120,	10, 8, 8, 8, 8, 8, 9, 1, 26, 26, 26, 26, 8,  
-	              8, 1, 1, 2, 2, 1, 1, 2, 7, 1, 1, 1, 1, 80, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 
-	              40, 40, 40, 40, 40, 40, 40, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
-	              10, 10, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
+fixed.widths <- c(1, 10, 30, 4, 30, 4, 30, 7, 2, 30, 2, 8, 5, 2, 6, 12, 9, 1, 1, 6, 3, 1, 1, 1, 1, 1, 1, 1, 2,
+	              6, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 15, 20, 1, 15, 1, 1, 1,
+	              1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 40, 120,	10, 8, 8, 8, 8, 8, 9, 1, 26, 26, 26, 26, 8,
+	              8, 1, 1, 2, 2, 1, 1, 2, 7, 1, 1, 1, 1, 80, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
+	              40, 40, 40, 40, 40, 40, 40, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+	              10, 10, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25,
 	              25, 25, 25,25, 25, 25, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20)
 
 g3 <- as.data.table(read.fwf(unz("Data/Base_Files/2015/ISTEPS15_GRT_GR3_111115.zip", "ISTEPS15_GRT_GR3_111115.DAT"), fixed.widths, colClasses = "character"))
@@ -84,7 +84,7 @@ tmp_Long_Data[, SCHOOL_NAME := trimWhiteSpace(SCHOOL_NAME)]
 #### Achievement Level
 tmp_Long_Data[which(ACHIEVEMENT_LEVEL==" "), ACHIEVEMENT_LEVEL := NA]
 tmp_Long_Data[, ACHIEVEMENT_LEVEL:=factor(ACHIEVEMENT_LEVEL, levels = c("B", "A", "P", "U"), labels=c("Did Not Pass", "Pass", "Pass +", "Undetermined"), ordered=TRUE)]
-tmp_Long_Data[, ACHIEVEMENT_LEVEL:=as.character(ACHIEVEMENT_LEVEL)] 
+tmp_Long_Data[, ACHIEVEMENT_LEVEL:=as.character(ACHIEVEMENT_LEVEL)]
 
 ####  Demographics
 tmp_Long_Data[which(GENDER == " "), GENDER := NA]
@@ -92,7 +92,7 @@ tmp_Long_Data[which(GENDER == "M"), GENDER := "Male"]
 tmp_Long_Data[which(GENDER == "F"), GENDER := "Female"]
 
 tmp_Long_Data[which(ETHNICITY == " "), ETHNICITY := NA]
-tmp_Long_Data[, ETHNICITY:=factor(ETHNICITY, levels = as.character(1:7), 
+tmp_Long_Data[, ETHNICITY:=factor(ETHNICITY, levels = as.character(1:7),
 					labels=c("American Indian/Alaska Native", "African American", "Asian", "Hispanic", "White", "Multiracial", "Pacific Islander"))]
 
 tmp_Long_Data[which(SPECIAL_ED_STATUS %in% c(" ", "-")), SPECIAL_ED_STATUS := NA]
@@ -125,7 +125,7 @@ tmp_Long_Data[is.na(STUDENT_ID), VALID_CASE := "INVALID_CASE"]
 ####  Find duplicates and take highest score
 setkey(tmp_Long_Data, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID, SCALE_SCORE)
 setkey(tmp_Long_Data, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID)
-tmp_Long_Data[which(duplicated(tmp_Long_Data))-1, VALID_CASE := "INVALID_CASE"]
+tmp_Long_Data[which(duplicated(tmp_Long_Data, by=key(tmp_Long_Data)))-1, VALID_CASE := "INVALID_CASE"]
 
 ###
 ###   Final cleanup
@@ -133,10 +133,10 @@ tmp_Long_Data[which(duplicated(tmp_Long_Data))-1, VALID_CASE := "INVALID_CASE"]
 
 #### Order variable.names
 variables.to.keep <- c(
-	"VALID_CASE", "STUDENT_ID", "CONTENT_AREA", "SCHOOL_YEAR", "GRADE_ID", "SCALE_SCORE", "ACHIEVEMENT_LEVEL", 
+	"VALID_CASE", "STUDENT_ID", "CONTENT_AREA", "SCHOOL_YEAR", "GRADE_ID", "SCALE_SCORE", "ACHIEVEMENT_LEVEL",
 	"IDOE_CORPORATION_ID", "CORPORATION_NAME", "IDOE_SCHOOL_ID", "SCHOOL_NAME",
 	"GENDER", "ETHNICITY", "SPECIAL_ED_STATUS", "ENGLISH_LEARNER_STATUS", "SOCIO_ECON_STATUS",
-	"SCHOOL_ENROLLMENT_STATUS", "DISTRICT_ENROLLMENT_STATUS", "STATE_ENROLLMENT_STATUS") 
+	"SCHOOL_ENROLLMENT_STATUS", "DISTRICT_ENROLLMENT_STATUS", "STATE_ENROLLMENT_STATUS")
 
 Indiana_Data_LONG_2015 <- tmp_Long_Data[, variables.to.keep, with = FALSE]
 
