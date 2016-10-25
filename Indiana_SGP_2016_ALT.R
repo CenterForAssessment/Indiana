@@ -26,7 +26,7 @@ Indiana_SGP_LONG_Data_2015[,ACHIEVEMENT_LEVEL:=NULL]
 
 tmp_SGP <- prepareSGP(Indiana_SGP_LONG_Data_2015)
 
-slot.data <- rbindlist(list(Indiana_SGP@Data[YEAR!="2015"], tmp_SGP@Data), fill=TRUE)
+slot.data <- rbindlist(list(Indiana_SGP@Data[!(YEAR=="2015" & GRADE==3 & CONTENT_AREA=="MATHEMATICS")], tmp_SGP@Data), fill=TRUE)
 setkey(slot.data, VALID_CASE, CONTENT_AREA, YEAR, ID)
 Indiana_SGP@Data <- slot.data
 
