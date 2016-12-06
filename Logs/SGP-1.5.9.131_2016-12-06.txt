@@ -1,0 +1,33 @@
+
+Started prepareSGP Tuesday December 06 04:16:43 2016
+
+
+	prepareSGP(
+		 data = tmp.missing.dt
+		state = IN )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Tuesday December 06 04:16:43 2016 in 0.037 Seconds 
+
+
+Started prepareSGP Tuesday December 06 04:18:43 2016
+
+
+	prepareSGP(
+		 data = tmp.missing.dt
+		state = IN )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Tuesday December 06 04:18:43 2016 in 0.027 Seconds 
+
+
+Started prepareSGP Tuesday December 06 04:20:47 2016
+
+
+	prepareSGP(
+		 data = tmp.missing.dt
+		state = IN )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Tuesday December 06 04:20:47 2016 in 0.024 Seconds 
+

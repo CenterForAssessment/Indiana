@@ -140,6 +140,31 @@ variables.to.keep <- c(
 
 Indiana_Data_LONG_2015 <- tmp_Long_Data[, variables.to.keep, with = FALSE]
 
+#############################################################
+### ADD IN ADDITIONAL CASES FOUND IN 2015-2016
+#############################################################
+
+tmp.missing <- fread("Data/Base_Files/Evansville_2016_Audit_Growth_Issue.txt", colClasses=rep("character", 17))
+setnames(tmp.missing, toupper(names(tmp.missing)))
+tmp.missing.dt <- data.table(
+				VALID_CASE="VALID_CASE",
+				STUDENT_ID=rep(tmp.missing$STUDENT_ID, 2),
+				CONTENT_AREA=rep(c("MATHEMATICS", "ELA"), each=dim(tmp.missing)[1]),
+				SCHOOL_YEAR="2015",
+				GRADE_ID=c(tmp.missing[[5]], tmp.missing[[13]]),
+				SCALE_SCORE=as.numeric(c(tmp.missing[[6]], tmp.missing[[14]])),
+				SCHOOL_ENROLLMENT_STATUS="Enrolled School: Yes",
+				DISTRICT_ENROLLMENT_STATUS="Enrolled District: Yes",
+				STATE_ENROLLMENT_STATUS="Enrolled State: Yes"
+)
+
+require(SGP)
+tmp.missing.dt <- prepareSGP(tmp.missing.dt, state="IN")@Data
+setnames(tmp.missing.dt, c("ID", "YEAR", "GRADE"), c("STUDENT_ID", "SCHOOL_YEAR", "GRADE_ID"))
+Indiana_Data_LONG_2015 <- rbindlist(list(Indiana_Data_LONG_2015, tmp.missing.dt), fill=TRUE)
+setkey(Indiana_Data_LONG_2015, VALID_CASE, CONTENT_AREA, SCHOOL_YEAR, STUDENT_ID)
+
+
 #### Save 2015 longitudinal data
 save(Indiana_Data_LONG_2015, file="Data/Indiana_Data_LONG_2015.Rdata")
 
