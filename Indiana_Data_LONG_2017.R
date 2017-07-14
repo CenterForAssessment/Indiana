@@ -11,7 +11,7 @@ require(data.table)
 
 ### Load base data files
 
-Indiana_Data_LONG_2017 <- fread("Data/Base_Files/ISTEP_2017_Damian_Export_20171020.csv", colClasses=rep("character", 7))
+Indiana_Data_LONG_2017 <- fread("Data/Base_Files/ISTEP_2017_Damian_Export_20170712.csv", colClasses=rep("character", 7))
 
 
 ### Prepare Data
@@ -31,8 +31,8 @@ Indiana_Data_LONG_2017[,SCALE_SCORE:=as.numeric(SCALE_SCORE)]
 
 ### Take highest score for duplicates
 
-setkey(Indiana_Data_LONG_2017, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID, SCALE_SCORE)
-setkey(Indiana_Data_LONG_2017, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID)
+setkey(Indiana_Data_LONG_2017, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID, SCALE_SCORE)
+setkey(Indiana_Data_LONG_2017, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
 Indiana_Data_LONG_2017[which(duplicated(Indiana_Data_LONG_2017, by=key(Indiana_Data_LONG_2017)))-1, VALID_CASE:="INVALID_CASE"]
 
 ### Save results
