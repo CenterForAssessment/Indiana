@@ -11,8 +11,8 @@ require(SGP)
 
 ### Load data
 
-load("../Dropbox/Indiana/Data/Indiana_Data_LONG_2017.Rdata")
-load("../Dropbox/Indiana/Data/Indiana_SGP.Rdata")
+load("Data/Indiana_Data_LONG_2017.Rdata")
+load("Data/Indiana_SGP.Rdata")
 
 
 ### updateSGP
@@ -34,4 +34,4 @@ Indiana_SGP <- updateSGP(
 
 ### Save results
 
-#save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
+save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
