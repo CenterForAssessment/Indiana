@@ -35,6 +35,12 @@ setkey(Indiana_Data_LONG_2017, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, 
 setkey(Indiana_Data_LONG_2017, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
 Indiana_Data_LONG_2017[which(duplicated(Indiana_Data_LONG_2017, by=key(Indiana_Data_LONG_2017)))-1, VALID_CASE:="INVALID_CASE"]
 
+
+### INVALIDATE cases with missing SCALE_SCORE
+
+Indiana_Data_LONG_2017[is.na(SCALE_SCORE), VALID_CASE:="INVALID_CASE"]
+
+
 ### Save results
 
 save(Indiana_Data_LONG_2017, file="Data/Indiana_Data_LONG_2017.Rdata")
