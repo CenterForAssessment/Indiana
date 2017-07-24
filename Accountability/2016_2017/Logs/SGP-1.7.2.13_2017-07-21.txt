@@ -1,0 +1,120 @@
+
+Started prepareSGP Friday July 21 06:42:05 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 06:42:15 2017 in 10.3 Seconds 
+
+
+Started prepareSGP Friday July 21 07:40:42 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 07:40:56 2017 in 13.5 Seconds 
+
+
+Started prepareSGP Friday July 21 07:54:15 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 07:54:27 2017 in 12.4 Seconds 
+
+
+Started prepareSGP Friday July 21 07:55:21 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 07:55:31 2017 in 10.3 Seconds 
+
+
+Started prepareSGP Friday July 21 07:56:34 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 07:56:45 2017 in 10.8 Seconds 
+
+
+Started prepareSGP Friday July 21 10:09:05 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 10:09:15 2017 in 10.5 Seconds 
+
+
+Started prepareSGP Friday July 21 10:29:24 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 10:29:33 2017 in 8.939 Seconds 
+
+
+Started prepareSGP Friday July 21 10:45:11 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 10:45:18 2017 in 7.403 Seconds 
+
+
+Started prepareSGP Friday July 21 10:46:34 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 10:46:41 2017 in 6.901 Seconds 
+
+
+Started prepareSGP Friday July 21 10:47:24 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 10:47:31 2017 in 7.154 Seconds 
+
+
+Started prepareSGP Friday July 21 11:26:46 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 11:26:57 2017 in 10.8 Seconds 
+
+
+Started prepareSGP Friday July 21 13:10:54 2017
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2016_2017 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Friday July 21 13:11:03 2017 in 8.942 Seconds 
+
