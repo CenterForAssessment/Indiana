@@ -12,10 +12,10 @@ require(data.table)
 
 ### Load 2015 data
 
-#load("../../Data/Indiana_SGP_LONG_Data.Rdata")
-#Indiana_SGP_LONG_Data_2015_2016 <- Indiana_SGP_LONG_Data[SCHOOL_YEAR %in% c("2015", "2016") & !is.na(SCALE_SCORE)]
-#Indiana_SGP_LONG_Data_2015_2016[,ACHIEVEMENT_LEVEL:=NULL]
-#Indiana_SGP_LONG_Data_2015_2016[,ACHIEVEMENT_LEVEL_PRIOR:=NULL]
+load("../../Data/Indiana_SGP_LONG_Data.Rdata")
+Indiana_SGP_LONG_Data_2015_2016 <- Indiana_SGP_LONG_Data[SCHOOL_YEAR %in% c("2015", "2016") & !is.na(SCALE_SCORE)]
+Indiana_SGP_LONG_Data_2015_2016[,ACHIEVEMENT_LEVEL:=NULL]
+Indiana_SGP_LONG_Data_2015_2016[,ACHIEVEMENT_LEVEL_PRIOR:=NULL]
 
 
 ### Modify SGPstateData for ACHIEVEMENT_LEVEL creation
