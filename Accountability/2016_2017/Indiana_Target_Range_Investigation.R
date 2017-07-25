@@ -141,8 +141,10 @@ for (al.iter in prior.achievement.levels) {
 
 aggregate.school.data <- slot.data[YEAR=="2017", list(MEDIAN_SGP=median(SGP, na.rm=TRUE), MEAN_POINTS=mean(POINTS, na.rm=TRUE), MEAN_PRIOR_ACHIEVEMENT=mean(SCALE_SCORE_PRIOR_STANDARDIZED, na.rm=TRUE), COUNT=.N), keyby=list(SCHOOL_NUMBER)]
 aggregate.school.content_area.data <- slot.data[YEAR=="2017", list(MEDIAN_SGP=median(SGP, na.rm=TRUE), MEAN_POINTS=mean(POINTS, na.rm=TRUE), MEAN_PRIOR_ACHIEVEMENT=mean(SCALE_SCORE_PRIOR_STANDARDIZED, na.rm=TRUE), COUNT=.N), keyby=list(SCHOOL_NUMBER, CONTENT_AREA)]
+aggregate.school.content_area.data.g10 <- slot.data[YEAR=="2017" & GRADE=="10", list(MEDIAN_SGP=median(SGP, na.rm=TRUE), MEAN_POINTS=mean(POINTS, na.rm=TRUE), MEAN_PRIOR_ACHIEVEMENT=mean(SCALE_SCORE_PRIOR_STANDARDIZED, na.rm=TRUE), COUNT=.N), keyby=list(SCHOOL_NUMBER, CONTENT_AREA)]
 aggregate.school.data <- aggregate.school.data[COUNT>=20]
 aggregate.school.content_area.data <- aggregate.school.content_area.data[COUNT>=20]
+aggregate.school.content_area.data.g10 <- aggregate.school.content_area.data.g10[COUNT>=20]
 
 
 cat("POINTS: SCHOOL by CONTENT_AREA\n")
