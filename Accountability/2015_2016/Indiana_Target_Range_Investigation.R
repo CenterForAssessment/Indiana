@@ -127,11 +127,22 @@ target.ranges.3 <- list(
     PASS_PLUS_1=list(c(0,45,50), c(46,64,100), c(65,99,150)),
     PASS_PLUS_2=list(c(0,45,50), c(46,64,100), c(65,99,150))
     )
+target.ranges.4 <- list( ### TARGET RANGES for 2016
+    DID_NOT_PASS_1=list(c(0,25,0), c(26,54,75), c(55,99,175)),
+    DID_NOT_PASS_2=list(c(0,30,0), c(31,54,75), c(55,99,175)),
+    DID_NOT_PASS_3=list(c(0,35,0), c(36,54,75), c(55,99,175)),
+    PASS_1=list(c(0,43,50), c(44,56,100), c(57,99,150)),
+    PASS_2=list(c(0,44,50), c(45,59,100), c(60,99,150)),
+    PASS_3=list(c(0,45,50), c(44,64,100), c(65,99,150)),
+    PASS_PLUS_1=list(c(0,45,50), c(46,64,100), c(65,99,150)),
+    PASS_PLUS_2=list(c(0,45,50), c(46,64,100), c(65,99,150))
+)
+
 
 for (al.iter in prior.achievement.levels) {
 	al.name <- gsub("[+]", "PLUS", gsub(" ", "_", toupper(al.iter)))
     for (i.iter in 1:3) {
-        slot.data[YEAR=="2016" & ACHIEVEMENT_LEVEL_PRIOR==al.iter & SGP >= target.ranges.3[[al.name]][[i.iter]][1] & SGP <= target.ranges.3[[al.name]][[i.iter]][2], POINTS:=target.ranges.3[[al.name]][[i.iter]][3]]
+        slot.data[YEAR=="2016" & ACHIEVEMENT_LEVEL_PRIOR==al.iter & SGP >= target.ranges.4[[al.name]][[i.iter]][1] & SGP <= target.ranges.4[[al.name]][[i.iter]][2], POINTS:=target.ranges.4[[al.name]][[i.iter]][3]]
     }
 }
 
