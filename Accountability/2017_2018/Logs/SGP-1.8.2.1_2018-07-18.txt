@@ -1,0 +1,10 @@
+
+Started prepareSGP Wednesday July 18 15:08:49 2018
+
+
+	prepareSGP(
+		 data = Indiana_SGP_LONG_Data_2017_2018 )
+
+	NOTE: Added variable ACHIEVEMENT_LEVEL to @Data using IN cutscores embedded in SGPstateData.
+Finished prepareSGP Wednesday July 18 15:09:00 2018 in 11.6 Seconds 
+
