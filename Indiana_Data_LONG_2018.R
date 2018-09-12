@@ -12,7 +12,8 @@ require(data.table)
 ### Load base data files
 
 #Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Initial_2018_20180709.csv", colClasses=rep("character", 7))
-Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Final_2018_20180817.csv", colClasses=rep("character", 7))
+#Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Final_2018_20180817.csv", colClasses=rep("character", 7))
+Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Final_2018_20180912.csv", colClasses=rep("character", 7))
 
 
 ### Prepare Data
