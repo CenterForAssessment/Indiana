@@ -14,6 +14,7 @@ require(data.table)
 #Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Initial_2018_20180709.csv", colClasses=rep("character", 7))
 #Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Final_2018_20180817.csv", colClasses=rep("character", 7))
 Indiana_Data_LONG_2018 <- fread("Data/Base_Files/ISTEP_2018_Damian_Export_Final_2018_20180912.csv", colClasses=rep("character", 7))
+INVALID_Students <- fread("Data/Base_Files/Pearson ISTEP Issue STN Student List for Damian 20181213.csv", colClasses=rep("character", 5))
 
 
 ### Prepare Data
@@ -31,6 +32,8 @@ Indiana_Data_LONG_2018[,GRADE_ID:=as.character(as.numeric(GRADE_ID))]
 Indiana_Data_LONG_2018[SCALE_SCORE=="NULL", SCALE_SCORE:=NA]
 Indiana_Data_LONG_2018[,SCALE_SCORE:=as.numeric(SCALE_SCORE)]
 
+INVALID_Students[,c("STN", "V3", "V4", "V5"):=NULL]
+INVALID_Students[,CONTENT_AREA:="ELA"]
 
 ### INVALIDATE cases with missing SCALE_SCORE
 
@@ -43,6 +46,12 @@ setkey(Indiana_Data_LONG_2018, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID
 setkey(Indiana_Data_LONG_2018, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, STUDENT_ID)
 Indiana_Data_LONG_2018[which(duplicated(Indiana_Data_LONG_2018, by=key(Indiana_Data_LONG_2018)))-1, VALID_CASE:="INVALID_CASE"]
 
+
+### Invalid cases from Pearson file.
+
+setkey(INVALID_Students, CONTENT_AREA, STUDENT_ID)
+setkey(Indiana_Data_LONG_2018, CONTENT_AREA, STUDENT_ID)
+Indiana_Data_LONG_2018[Indiana_Data_LONG_2018[INVALID_Students, which=TRUE], VALID_CASE:="INVALID_CASE"]
 
 ### Save results
 
