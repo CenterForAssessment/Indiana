@@ -35,6 +35,7 @@ Indiana_Data_LONG_2018[,SCALE_SCORE:=as.numeric(SCALE_SCORE)]
 
 ### INVALIDATE cases with missing SCALE_SCORE
 
+Indiana_Data_LONG_2018[SCALE_SCORE==0, SCALE_SCORE:=NA]
 Indiana_Data_LONG_2018[is.na(SCALE_SCORE), VALID_CASE:="INVALID_CASE"]
 
 ### Take highest score for duplicates
