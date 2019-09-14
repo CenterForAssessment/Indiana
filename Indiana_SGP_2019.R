@@ -29,7 +29,7 @@ Indiana_SGP <- updateSGP(
 			sgp.projections.lagged.baseline=FALSE,
 			save.intermediate.results=FALSE,
 			sgp.target.scale.scores=FALSE,
-			parallel.config=list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=4)))
+			parallel.config=list(BACKEND="PARALLEL", WORKERS=list(TAUS=22)))
 
 
 ### Save results
