@@ -31,6 +31,16 @@ SGPstateData[["IN"]][["Achievement"]][["Cutscores"]][["ELA"]] <-
             GRADE_8=c(478, 513, 537, 561, 587, 617, 647),
             GRADE_10=c(189, 218, 244, 261, 275, 292, 312))
 
+SGPstateData[["IN"]][["Achievement"]][["Cutscores"]][["ELA.2019"]] <-
+        list(
+            GRADE_3=c(5385, 5426, 5460, 5477, 5494, 5515, 5541),
+            GRADE_4=c(5411, 5457, 5493, 5509, 5526, 5547, 5577),
+            GRADE_5=c(5439, 5486, 5524, 5545, 5567, 5595, 5622),
+            GRADE_6=c(5466, 5509, 5544, 5562, 5582, 5604, 5629),
+            GRADE_7=c(5481, 5531, 5568, 5587, 5606, 5629, 5659),
+            GRADE_8=c(5496, 5541, 5577, 5596, 5616, 5638, 5668),
+            GRADE_10=c(189, 218, 244, 261, 275, 292, 312))
+
 SGPstateData[["IN"]][["Achievement"]][["Cutscores"]][["MATHEMATICS"]] <-
         list(
             GRADE_3=c(372, 402, 425, 443, 460, 480, 507),
@@ -39,6 +49,16 @@ SGPstateData[["IN"]][["Achievement"]][["Cutscores"]][["MATHEMATICS"]] <-
             GRADE_6=c(463, 491, 510, 526, 542, 560, 582),
             GRADE_7=c(490, 514, 533, 546, 562, 578, 601),
             GRADE_8=c(508, 535, 554, 567, 580, 595, 618),
+            GRADE_10=c(220, 253, 271, 290, 310, 339, 350))
+
+SGPstateData[["IN"]][["Achievement"]][["Cutscores"]][["MATHEMATICS.2019"]] <-
+        list(
+            GRADE_3=c(6353, 6394, 6425, 6445, 6466, 6488, 6521),
+            GRADE_4=c(6398, 6441, 6474, 6494, 6516, 6541, 6571),
+            GRADE_5=c(6422, 6472, 6510, 6527, 6545, 6566, 6601),
+            GRADE_6=c(6446, 6503, 6545, 6562, 6582, 6605, 6637),
+            GRADE_7=c(6452, 6512, 6562, 6581, 6601, 6625, 6662),
+            GRADE_8=c(6458, 6531, 6590, 6608, 6628, 6651, 6692),
             GRADE_10=c(220, 253, 271, 290, 310, 339, 350))
 
 SGPstateData[["IN"]][["Achievement"]][["Levels"]] <-
@@ -61,37 +81,37 @@ Indiana_SGP <- prepareSGP(Indiana_SGP_LONG_Data_2018_2019)
 Indiana_SGP@Data <- SGP:::getAchievementLevel(Indiana_SGP@Data, state="IN", achievement.level.name="ACHIEVEMENT_LEVEL_PRIOR", scale.score.name="SCALE_SCORE_PRIOR")
 
 
-### TEST DISTRIBUTION BASED UPON CUTS
+### TEST DISTRIBUTION (JUST 2018 because of test transition in 2019) BASED UPON CUTS
 
-print(prop.table(table(Indiana_SGP@Data[CONTENT_AREA=="ELA"]$ACHIEVEMENT_LEVEL, Indiana_SGP@Data[CONTENT_AREA=="ELA"]$GRADE), 2))
-print(prop.table(table(Indiana_SGP@Data[CONTENT_AREA=="MATHEMATICS"]$ACHIEVEMENT_LEVEL, Indiana_SGP@Data[CONTENT_AREA=="MATHEMATICS"]$GRADE), 2))
+print(prop.table(table(Indiana_SGP@Data[CONTENT_AREA=="ELA" & YEAR=="2018"]$ACHIEVEMENT_LEVEL, Indiana_SGP@Data[CONTENT_AREA=="ELA" & YEAR=="2018"]$GRADE), 2))
+print(prop.table(table(Indiana_SGP@Data[CONTENT_AREA=="MATHEMATICS" & YEAR=="2018"]$ACHIEVEMENT_LEVEL, Indiana_SGP@Data[CONTENT_AREA=="MATHEMATICS" & YEAR=="2018"]$GRADE), 2))
 
 ################################################
-### Summarize target ranges
+### Summarize target ranges (PL transitions not applicable in 2018 to 2019)
 ################################################
 
-my.tmp <- Indiana_SGP@Data[YEAR=="2019" & !is.na(ACHIEVEMENT_LEVEL_PRIOR),
-    list(
-	MEDIAN_SGP=as.numeric(median(SGP, na.rm=TRUE)),
-	MEAN_SGP=mean(SGP, na.rm=TRUE),
-	PERCENTILE_25_SGP=quantile(SGP, probs=0.25, na.rm=TRUE),
-	PERCENTILE_75_SGP=quantile(SGP, probs=0.75, na.rm=TRUE),
-	SD_SGP=sd(SGP, na.rm=TRUE), COUNT=.N), keyby=list(CONTENT_AREA, GRADE, ACHIEVEMENT_LEVEL_PRIOR, ACHIEVEMENT_LEVEL)]
+#my.tmp <- Indiana_SGP@Data[YEAR=="2019" & !is.na(ACHIEVEMENT_LEVEL_PRIOR),
+#    list(
+#	MEDIAN_SGP=as.numeric(median(SGP, na.rm=TRUE)),
+#	MEAN_SGP=mean(SGP, na.rm=TRUE),
+#	PERCENTILE_25_SGP=quantile(SGP, probs=0.25, na.rm=TRUE),
+#	PERCENTILE_75_SGP=quantile(SGP, probs=0.75, na.rm=TRUE),
+#	SD_SGP=sd(SGP, na.rm=TRUE), COUNT=.N), keyby=list(CONTENT_AREA, GRADE, ACHIEVEMENT_LEVEL_PRIOR, ACHIEVEMENT_LEVEL)]
 
-my.transitions <- list(
-    dnp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 1", 2), ACHIEVEMENT_LEVEL=c("Did Not Pass 1", "Did Not Pass 2")),
-    dnp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 2", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 1", "Did Not Pass 2", "Did Not Pass 3")),
-    dnp3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 3", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 2", "Did Not Pass 3", "Pass 1")),
-    p1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 1", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 3", "Pass 1", "Pass 2")),
-    p2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 2", 3), ACHIEVEMENT_LEVEL=c("Pass 1", "Pass 2", "Pass 3")),
-    p3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 3", 3), ACHIEVEMENT_LEVEL=c("Pass 2", "Pass 3", "Pass + 1")),
-    pp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 1", 3), ACHIEVEMENT_LEVEL=c("Pass 3", "Pass + 1", "Pass + 2")),
-    pp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 2", ), ACHIEVEMENT_LEVEL=c("Pass + 1", "Pass + 2")))
+#my.transitions <- list(
+#    dnp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 1", 2), ACHIEVEMENT_LEVEL=c("Did Not Pass 1", "Did Not Pass 2")),
+#    dnp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 2", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 1", "Did Not Pass 2", "Did Not Pass 3")),
+#    dnp3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Did Not Pass 3", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 2", "Did Not Pass 3", "Pass 1")),
+#    p1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 1", 3), ACHIEVEMENT_LEVEL=c("Did Not Pass 3", "Pass 1", "Pass 2")),
+#    p2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 2", 3), ACHIEVEMENT_LEVEL=c("Pass 1", "Pass 2", "Pass 3")),
+#    p3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 3", 3), ACHIEVEMENT_LEVEL=c("Pass 2", "Pass 3", "Pass + 1")),
+#    pp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 1", 3), ACHIEVEMENT_LEVEL=c("Pass 3", "Pass + 1", "Pass + 2")),
+#    pp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 2", ), ACHIEVEMENT_LEVEL=c("Pass + 1", "Pass + 2")))
 
-my.transitions.long <- data.table(rbindlist(my.transitions), key=c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
-setkeyv(my.tmp, c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
+#my.transitions.long <- data.table(rbindlist(my.transitions), key=c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
+#setkeyv(my.tmp, c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
 
-final.transitions <- data.table(my.tmp[my.transitions.long], key=c("CONTENT_AREA", "GRADE", "ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
+#final.transitions <- data.table(my.tmp[my.transitions.long], key=c("CONTENT_AREA", "GRADE", "ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
 
 
 ### Calculate points based upon target ranges
@@ -129,7 +149,7 @@ target.ranges.3 <- list(
     PASS_PLUS_1=list(c(0,45,50), c(46,64,100), c(65,99,150)),
     PASS_PLUS_2=list(c(0,45,50), c(46,64,100), c(65,99,150))
     )
-target.ranges.4 <- list( ### TARGET RANGES for 2017
+target.ranges.4 <- list( ### TARGET RANGES for 2019
     DID_NOT_PASS_1=list(c(0,25,0), c(26,54,75), c(55,99,175)),
     DID_NOT_PASS_2=list(c(0,30,0), c(31,54,75), c(55,99,175)),
     DID_NOT_PASS_3=list(c(0,35,0), c(36,54,75), c(55,99,175)),
