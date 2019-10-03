@@ -78,8 +78,16 @@ Indiana_SGP <- prepareSGP(Indiana_SGP_LONG_Data_2018_2019)
 
 ## ACHIEVEMENT_LEVEL_PRIOR
 
-Indiana_SGP@Data <- SGP:::getAchievementLevel(Indiana_SGP@Data, state="IN", achievement.level.name="ACHIEVEMENT_LEVEL_PRIOR", scale.score.name="SCALE_SCORE_PRIOR")
-
+slot.data <- copy(Indiana_SGP@Data)
+slot.data[,YEAR_ACTUAL:=YEAR]
+slot.data[YEAR=="2018", YEAR:="2017"]
+slot.data[YEAR=="2019", YEAR:="2018"]
+setkey(slot.data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
+slot.data <- SGP:::getAchievementLevel(slot.data, state="IN", achievement.level.name="ACHIEVEMENT_LEVEL_PRIOR", scale.score.name="SCALE_SCORE_PRIOR")
+slot.data[,YEAR:=YEAR_ACTUAL]
+slot.data[,YEAR_ACTUAL:=NULL]
+setkey(slot.data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
+Indiana_SGP@Data <- slot.data
 
 ### TEST DISTRIBUTION (JUST 2018 because of test transition in 2019) BASED UPON CUTS
 
@@ -106,17 +114,17 @@ print(prop.table(table(Indiana_SGP@Data[CONTENT_AREA=="MATHEMATICS" & YEAR=="201
 #    p2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 2", 3), ACHIEVEMENT_LEVEL=c("Pass 1", "Pass 2", "Pass 3")),
 #    p3=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass 3", 3), ACHIEVEMENT_LEVEL=c("Pass 2", "Pass 3", "Pass + 1")),
 #    pp1=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 1", 3), ACHIEVEMENT_LEVEL=c("Pass 3", "Pass + 1", "Pass + 2")),
-#    pp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 2", ), ACHIEVEMENT_LEVEL=c("Pass + 1", "Pass + 2")))
+#    pp2=data.table(ACHIEVEMENT_LEVEL_PRIOR=rep("Pass + 2", 2), ACHIEVEMENT_LEVEL=c("Pass + 1", "Pass + 2")))
 
 #my.transitions.long <- data.table(rbindlist(my.transitions), key=c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
 #setkeyv(my.tmp, c("ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
 
-#final.transitions <- data.table(my.tmp[my.transitions.long], key=c("CONTENT_AREA", "GRADE", "ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))
+#final.transitions <- data.table(my.tmp[my.transitions.long], key=c("CONTENT_AREA", "GRADE", "ACHIEVEMENT_LEVEL_PRIOR", "ACHIEVEMENT_LEVEL"))[!is.na(CONTENT_AREA) & !is.na(GRADE)]
 
 
 ### Calculate points based upon target ranges
 
-slot.data <- copy(Indiana_SGP@Data)
+#slot.data <- copy(Indiana_SGP@Data)
 
 prior.achievement.levels <- c("Did Not Pass 1", "Did Not Pass 2", "Did Not Pass 3", "Pass 1", "Pass 2", "Pass 3", "Pass + 1", "Pass + 2")
 target.ranges.1 <- list(
@@ -149,7 +157,7 @@ target.ranges.3 <- list(
     PASS_PLUS_1=list(c(0,45,50), c(46,64,100), c(65,99,150)),
     PASS_PLUS_2=list(c(0,45,50), c(46,64,100), c(65,99,150))
     )
-target.ranges.4 <- list( ### TARGET RANGES for 2019
+target.ranges.4 <- list( ### TARGET RANGES for 2018
     DID_NOT_PASS_1=list(c(0,25,0), c(26,54,75), c(55,99,175)),
     DID_NOT_PASS_2=list(c(0,30,0), c(31,54,75), c(55,99,175)),
     DID_NOT_PASS_3=list(c(0,35,0), c(36,54,75), c(55,99,175)),
@@ -160,8 +168,18 @@ target.ranges.4 <- list( ### TARGET RANGES for 2019
     PASS_PLUS_2=list(c(0,45,50), c(46,64,100), c(65,99,150))
 )
 
+target.ranges.5 <- list( ### POTENTIAL TARGET RANGES for 2019
+    DID_NOT_PASS_1=list(c(0,30,0), c(31,59,75), c(60,99,175)),
+    DID_NOT_PASS_2=list(c(0,30,0), c(31,59,75), c(60,99,175)),
+    DID_NOT_PASS_3=list(c(0,35,0), c(36,59,75), c(60,99,175)),
+    PASS_1=list(c(0,45,50), c(46,65,100), c(66,99,150)),
+    PASS_2=list(c(0,45,50), c(46,65,100), c(66,99,150)),
+    PASS_3=list(c(0,45,50), c(46,65,100), c(66,99,150)),
+    PASS_PLUS_1=list(c(0,45,50), c(46,64,100), c(65,99,150)),
+    PASS_PLUS_2=list(c(0,45,50), c(46,64,100), c(65,99,150))
+)
 
-my.target.ranges <- target.ranges.4
+my.target.ranges <- target.ranges.5
 
 for (al.iter in prior.achievement.levels) {
 	al.name <- gsub("[+]", "PLUS", gsub(" ", "_", toupper(al.iter)))
@@ -179,11 +197,11 @@ aggregate.school.content_area.data.g10 <- aggregate.school.content_area.data.g10
 
 
 cat("POINTS: SCHOOL by CONTENT_AREA\n")
-print(cor(aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEAN_POINTS, use="complete.obs"))
-print(cor(aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEAN_POINTS, use="complete.obs"))
+print(paste("ELA:", cor(aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEAN_POINTS, use="complete.obs")))
+print(paste("MATHEMATICS:", cor(aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEAN_POINTS, use="complete.obs")))
 cat("\nSGP: SCHOOL by CONTENT_AREA\n")
-print(cor(aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEDIAN_SGP, use="complete.obs"))
-print(cor(aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEDIAN_SGP, use="complete.obs"))
+print(paste("ELA:", cor(aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="ELA"]$MEDIAN_SGP, use="complete.obs")))
+print(paste("MATHEMATICS:", cor(aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.content_area.data[CONTENT_AREA=="MATHEMATICS"]$MEDIAN_SGP, use="complete.obs")))
 cat("\n\nPOINTS: SCHOOL\n")
 print(cor(aggregate.school.data$MEAN_PRIOR_ACHIEVEMENT, aggregate.school.data$MEAN_POINTS, use="complete.obs"))
 cat("\n\nSGP: SCHOOL\n")
