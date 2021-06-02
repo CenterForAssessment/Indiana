@@ -6,11 +6,17 @@
 
 ###   Load packages
 require(SGP)
+require(data.table)
 #require(SGPmatrices)
 #debug(addBaselineMatrices)
 
 ###   Load data and remove years that will not be used.
 load("Data/Indiana_SGP_LONG_Data.Rdata")
+
+### Test for BASELINE related variable in LONG data and NULL out if they exist
+if (length(tmp.names <- grep("BASELINE|SS", names(Indiana_SGP_LONG_Data))) > 0) {
+		Indiana_SGP_LONG_Data[,eval(tmp.names):=NULL]
+}
 
 ###   Add single-cohort baseline matrices to SGPstateData
 SGPstateData <- SGPmatrices::addBaselineMatrices("IN", "2021")

@@ -23,9 +23,9 @@ ELA_2019.config <- list(
         sgp.panel.years=c("2016", "2017", "2019"),
         sgp.grade.sequences=list(c("3", "4", "6")),
         sgp.baseline.grade.sequences=list(c("3", "4", "6")),
-        sgp.projection.baseline.content.areas="ELA",
-        sgp.projection.baseline.panel.years="2019",
-        sgp.projection.baseline.grade.sequences=list(c("4")),
+        sgp.projection.baseline.content.areas=rep("ELA", 2),
+        sgp.projection.baseline.panel.years=c("2018", "2019"),
+        sgp.projection.baseline.grade.sequences=list(c("3", "4")),
         sgp.projection.sequence="ELA_GRADE_4"),
     ELA.2019 = list(
         sgp.content.areas=rep("ELA", 3),
@@ -34,9 +34,9 @@ ELA_2019.config <- list(
         sgp.panel.years=c("2016", "2017", "2019"),
         sgp.grade.sequences=list(c("4", "5", "7")),
         sgp.baseline.grade.sequences=list(c("4", "5", "7")),
-        sgp.projection.baseline.content.areas="ELA",
-        sgp.projection.baseline.panel.years="2019",
-        sgp.projection.baseline.grade.sequences=list(c("5")),
+        sgp.projection.baseline.content.areas=rep("ELA", 2),
+        sgp.projection.baseline.panel.years=c("2018", "2019"),
+        sgp.projection.baseline.grade.sequences=list(c("4", "5")),
         sgp.projection.sequence="ELA_GRADE_5"),
     ELA.2019 = list(
         sgp.content.areas=rep("ELA", 3),
@@ -45,8 +45,8 @@ ELA_2019.config <- list(
         sgp.panel.years=c("2016", "2017", "2019"),
         sgp.grade.sequences=list(c("5", "6", "8")),
         sgp.baseline.grade.sequences=list(c("5", "6", "8")),
-        sgp.projection.baseline.content.areas="ELA",
-        sgp.projection.baseline.panel.years="2019",
-        sgp.projection.baseline.grade.sequences=list(c("6")),
+        sgp.projection.baseline.content.areas=rep("ELA", 2),
+        sgp.projection.baseline.panel.years=c("2018", "2019"),
+        sgp.projection.baseline.grade.sequences=list(c("5", "6")),
         sgp.projection.sequence="ELA_GRADE_6")
 )
