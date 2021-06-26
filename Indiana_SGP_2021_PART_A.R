@@ -9,7 +9,7 @@ require(SGP)
 require(SGPmatrices)
 
 ###   Load data
-load("Data/Indiana_SGP.Rdata"))
+load("Data/Indiana_SGP.Rdata")
 load("Data/Indiana_Data_LONG_2021.Rdata")
 
 ###   Add Baseline matrices to SGPstateData
@@ -44,4 +44,4 @@ Indiana_COVID_SGP <- updateSGP(
 )
 
 ###   Save results
-save(Indiana_SGP, file="Indiana_SGP.Rdata"))
+save(Indiana_SGP, file="Indiana_SGP.Rdata")

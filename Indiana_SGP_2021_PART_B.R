@@ -9,7 +9,7 @@ require(SGP)
 require(SGPmatrices)
 
 ###   Load data
-load("Data/Indiana_SGP.Rdata"))
+load("Data/Indiana_SGP.Rdata")
 
 ###   Load configurations
 source("SGP_CONFIG/2021/PART_B/ELA.R")

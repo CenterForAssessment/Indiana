@@ -9,7 +9,7 @@ require(SGP)
 require(SGPmatrices)
 
 ###   Load data
-load("Data/Indiana_SGP.Rdata"))
+load("Data/Indiana_SGP.Rdata")
 
 ###   Load configurations
 source("SGP_CONFIG/2021/PART_C/ELA.R")
@@ -87,4 +87,4 @@ Indiana_SGP <- abcSGP(
 
 
 ###  Save results
-save(Indiana_SGP, "Data/Indiana_SGP.Rdata"))
+save(Indiana_SGP, "Data/Indiana_SGP.Rdata")
