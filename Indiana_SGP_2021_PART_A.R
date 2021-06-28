@@ -14,6 +14,7 @@ load("Data/Indiana_Data_LONG_2021.Rdata")
 
 ###   Add Baseline matrices to SGPstateData
 SGPstateData <- addBaselineMatrices("IN", "2021")
+SGPstateData[["IN"]][["Assessment_Program_Information"]][["Assessment_Transition"]] <- NULL
 
 ###   Read in SGP Configuration Scripts and Combine
 source("SGP_CONFIG/2021/PART_A/ELA.R")
@@ -25,10 +26,10 @@ IN_CONFIG <- c(ELA_2021.config, MATHEMATICS_2021.config)
 parallel.config <- list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=4, BASELINE_PERCENTILES=4, PROJECTIONS=4, LAGGED_PROJECTIONS=4, SGP_SCALE_SCORE_TARGETS=4))
 
 #####
-###   Run updateSGP :which(x, arr.ind = FALSE, useNames = TRUE)analysis
+###   Run updateSGP analysis
 #####
 
-Indiana_COVID_SGP <- updateSGP(
+Indiana_SGP <- updateSGP(
         what_sgp_object = Indiana_SGP,
         with_sgp_data_LONG = Indiana_Data_LONG_2021,
         steps = c("prepareSGP", "analyzeSGP", "combineSGP"),
@@ -44,4 +45,4 @@ Indiana_COVID_SGP <- updateSGP(
 )
 
 ###   Save results
-save(Indiana_SGP, file="Indiana_SGP.Rdata")
+save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")

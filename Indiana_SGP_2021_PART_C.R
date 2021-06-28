@@ -25,6 +25,7 @@ parallel.config <- list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=4, BASELINE
 ###   Add Baseline matrices to SGPstateData and update SGPstateData
 SGPstateData <- addBaselineMatrices("IN", "2021")
 SGPstateData[["IN"]][["Growth"]][["System_Type"]] <- "Baseline Referenced"
+SGPstateData[["IN"]][["Assessment_Program_Information"]][["Assessment_Transition"]] <- NULL
 
 #  Establish required meta-data for LAGGED projection sequences
 SGPstateData[["IN"]][["SGP_Configuration"]][["grade.projection.sequence"]] <- list(
@@ -54,18 +55,18 @@ SGPstateData[["IN"]][["SGP_Configuration"]][["content_area.projection.sequence"]
     MATHEMATICS_GRADE_7=rep("MATHEMATICS", 5),
     MATHEMATICS_GRADE_8=rep("MATHEMATICS", 5))
 SGPstateData[["IN"]][["SGP_Configuration"]][["max.forward.projection.sequence"]] <- list(
-    ELA_GRADE_3=3,
-    ELA_GRADE_4=3,
-    ELA_GRADE_5=3,
-    ELA_GRADE_6=3,
-    ELA_GRADE_7=3,
-    ELA_GRADE_8=3,
-    MATHEMATICS_GRADE_3=3,
-    MATHEMATICS_GRADE_4=3,
-    MATHEMATICS_GRADE_5=3,
-    MATHEMATICS_GRADE_6=3,
-    MATHEMATICS_GRADE_7=3,
-    MATHEMATICS_GRADE_8=3)
+    ELA_GRADE_3=4,
+    ELA_GRADE_4=4,
+    ELA_GRADE_5=4,
+    ELA_GRADE_6=4,
+    ELA_GRADE_7=4,
+    ELA_GRADE_8=4,
+    MATHEMATICS_GRADE_3=4,
+    MATHEMATICS_GRADE_4=4,
+    MATHEMATICS_GRADE_5=4,
+    MATHEMATICS_GRADE_6=4,
+    MATHEMATICS_GRADE_7=4,
+    MATHEMATICS_GRADE_8=4)
 
 
 ### Run analysis
@@ -81,10 +82,9 @@ Indiana_SGP <- abcSGP(
         sgp.projections.baseline=FALSE,
         sgp.projections.lagged.baseline=TRUE,
         sgp.target.scale.scores=TRUE,
-        outputSGP.directory=output.directory,
         parallel.config=parallel.config
 )
 
 
 ###  Save results
-save(Indiana_SGP, "Data/Indiana_SGP.Rdata")
+save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
