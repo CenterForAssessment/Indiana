@@ -44,5 +44,12 @@ Indiana_SGP <- updateSGP(
         parallel.config = parallel.config
 )
 
+
+### Copy SCALE_SCORE_PRIOR and SCALE_SCORE_PRIOR_STANDARDIZED to BASELINE counter parts
+
+Indiana_SGP@Data[YEAR:="2021", SCALE_SCORE_PRIOR_BASELINE:=SCALE_SCORE_PRIOR]
+Indiana_SGP@Data[YEAR:="2021", SCALE_SCORE_PRIOR_STANDARDIZED_BASELINE:=SCALE_SCORE_PRIOR_STANDARDIZED]
+
+
 ###   Save results
 save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
