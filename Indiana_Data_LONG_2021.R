@@ -13,7 +13,7 @@ require(data.table)
 
 Indiana_Data_LONG_2021 <- fread("Data/Base_Files/ILEARN_2021_Damian_Export_20210625.csv", colClasses=rep("character", 7))
 Indiana_Demographics_2021 <- fread("Data/Base_Files/ILEARN_2021_demographics.csv", colClasses=rep("character", 5))
-Indiana_Demographics_2019 <- fread("Data/Base_Files/ILEARN_2019_demographics.csv", colClasses=rep("character", 5))
+Indiana_Gender <- fread("Data/Base_Files/ILEARN_2019_and_2021_Gender_Demo.txt", colClasses=rep("character", 4))
 
 
 ### Prepare Data
@@ -43,7 +43,21 @@ setkey(Indiana_Data_LONG_2021, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 
 Indiana_Data_LONG_2021 <- Indiana_Demographics_2021[Indiana_Data_LONG_2021]
 
-#setcolorder(Indiana_Data_LONG_2021, c(6,12,7,10,1,11,8,9,2,3,4,5))
+### Prepare Indiana_Gender_2021
+
+Indiana_Gender[,STN:=NULL]
+setnames(Indiana_Gender, c("SCHOOL_YEAR", "STUDENT_ID", "GENDER"))
+Indiana_Gender[GENDER=="F", GENDER:="Female"]
+Indiana_Gender[GENDER=="M", GENDER:="Male"]
+Indiana_Gender_2021 <- Indiana_Gender[SCHOOL_YEAR=="2021"]
+Indiana_Gender_2021[, VALID_CASE:="VALID_CASE"]
+setkey(Indiana_Gender_2021, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
+
+### Merge in demographics
+
+Indiana_Data_LONG_2021 <- Indiana_Gender_2021[Indiana_Data_LONG_2021]
+
+setcolorder(Indiana_Data_LONG_2021, c(4,13,1,11,2,12,10,9,3,5,6,7,8))
 
 ### Take highest score for duplicates
 
@@ -81,6 +95,29 @@ save(Indiana_Data_LONG_2021, file="Data/Indiana_Data_LONG_2021.Rdata")
 
 #tmp.2019 <- Indiana_Demographics_2019[tmp.2019]
 
-#tmp.all <- rbindlist(list(tmp.all, tmp.2019), use.names=TRUE)
+#tmp.all <- rbindlist(list(tmp.other.years, tmp.2019), use.names=TRUE)
 #Indiana_SGP@Data <- tmp.all
-#setkey(Indiana_SGP, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
+#setkey(Indiana_SGP@Data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
+
+### GENDER merge into SGP object for 2019
+
+#Indiana_Gender <- fread("Data/Base_Files/ILEARN_2019_and_2021_Gender_Demo.txt", colClasses=rep("character", 4))
+
+#Indiana_Gender[,STN:=NULL]
+#setnames(Indiana_Gender, c("YEAR", "ID", "GENDER"))
+#Indiana_Gender[GENDER=="F", GENDER:="Female"]
+#Indiana_Gender[GENDER=="M", GENDER:="Male"]
+#Indiana_Gender[,VALID_CASE:="VALID_CASE"]
+#setkey(Indiana_Gender, VALID_CASE, YEAR, ID)
+
+#tmp.2019_2021 <- copy(Indiana_SGP@Data[YEAR>="2019"])
+#tmp.other.years <- copy(Indiana_SGP@Data[YEAR<"2019"])
+#tmp.2019_2021[,"GENDER":=NULL]
+
+#setkey(tmp.2019_2021, VALID_CASE, YEAR, ID)
+
+#tmp.2019_2021 <- Indiana_Gender_2019[tmp.2019_2021]
+
+#tmp.all <- rbindlist(list(tmp.other.years, tmp.2019_2021), use.names=TRUE)
+#Indiana_SGP@Data <- tmp.all
+#setkey(Indiana_SGP@Data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
