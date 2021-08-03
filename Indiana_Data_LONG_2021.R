@@ -99,7 +99,7 @@ save(Indiana_Data_LONG_2021, file="Data/Indiana_Data_LONG_2021.Rdata")
 #Indiana_SGP@Data <- tmp.all
 #setkey(Indiana_SGP@Data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
 
-### GENDER merge into SGP object for 2019
+### GENDER merge into SGP object
 
 #Indiana_Gender <- fread("Data/Base_Files/ILEARN_2019_and_2021_Gender_Demo.txt", colClasses=rep("character", 4))
 
@@ -116,8 +116,34 @@ save(Indiana_Data_LONG_2021, file="Data/Indiana_Data_LONG_2021.Rdata")
 
 #setkey(tmp.2019_2021, VALID_CASE, YEAR, ID)
 
-#tmp.2019_2021 <- Indiana_Gender_2019[tmp.2019_2021]
+#tmp.2019_2021 <- Indiana_Gender[tmp.2019_2021]
 
 #tmp.all <- rbindlist(list(tmp.other.years, tmp.2019_2021), use.names=TRUE)
 #Indiana_SGP@Data <- tmp.all
 #setkey(Indiana_SGP@Data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
+#save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
+
+
+###########################################################################################
+### Merge in 2021 Mode of Instruction
+###########################################################################################
+
+#require(data.table)
+#load("Data/Indiana_SGP.Rdata")
+#tmp.mode.of.instruction.2021 <- fread("Data/Base_Files/Student_Level_Mode_of_Instruction_20210715.csv")
+#setnames(tmp.mode.of.instruction.2021, c("ID", "MODE_OF_INSTRUCTION"))
+
+#table(nchar(Indiana_SGP@Data[YEAR=="2021"]$ID))
+
+#tmp.mode.of.instruction.2021[,ID:=as.character(ID)]
+#tmp.mode.of.instruction.2021[,YEAR:="2021"]
+#tmp.mode.of.instruction.2021[,VALID_CASE:="VALID_CASE"]
+#setkey(tmp.mode.of.instruction.2021, VALID_CASE, YEAR, ID)
+
+#tmp.SGP.data <- copy(Indiana_SGP@Data)
+#setkey(tmp.SGP.data, VALID_CASE, YEAR, ID)
+#tmp.SGP.data <- tmp.mode.of.instruction.2021[tmp.SGP.data]
+#setcolorder(tmp.SGP.data, c(4, 5, 3, 8, 1, 9:40, 6, 7, 41:75, 2))
+
+#setkey(tmp.SGP.data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
+#Indiana_SGP@Data <- tmp.SGP.data
