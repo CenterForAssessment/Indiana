@@ -34,8 +34,8 @@ SGPstateData[["IN"]][["Assessment_Program_Information"]][["Assessment_Transition
 SGPstateData[["IN"]][["Assessment_Program_Information"]][["Scale_Change"]] <- NULL
 
 ###   Read in BASELINE percentiles configuration scripts and combine
-source("SGP_CONFIG/2022/BASELINE/Percentiles/ELA.R")
-source("SGP_CONFIG/2022/BASELINE/Percentiles/MATHEMATICS.R")
+source("SGP_CONFIG/2022/PART_A/ELA.R")
+source("SGP_CONFIG/2022/PART_A/MATHEMATICS.R")
 
 IN_2019_Consecutive_Baseline_Config <- c(
 	ELA_2019.config,

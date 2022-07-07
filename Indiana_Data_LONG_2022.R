@@ -10,7 +10,7 @@ require(data.table)
 
 ### Load base data files
 Indiana_Data_LONG_2022 <- fread("Data/Base_Files/ILEARN_2022_Damian_Export_20220705.txt", colClasses=rep("character", 7))
-#Indiana_Demographics_2022 <- fread("Data/Base_Files/ILEARN_2022_demographics.csv", colClasses=rep("character", 5))
+Indiana_Demographics_2022 <- fread("Data/Base_Files/ILEARN_2022_demographics.txt", colClasses=rep("character", 6))
 
 
 ### Prepare Data
@@ -27,38 +27,25 @@ Indiana_Data_LONG_2022[,SCALE_SCORE:=as.numeric(SCALE_SCORE)]
 ### INVALIDATE cases with missing SCALE_SCORE
 Indiana_Data_LONG_2022[is.na(SCALE_SCORE), VALID_CASE:="INVALID_CASE"]
 
-# ### Prepare Indiana_Demographics_2022
-# setnames(Indiana_Demographics_2022, c("STUDENT_ID", "ETHNICITY", "SPECIAL_EDUCATION_STATUS", "SOCIO_ECONOMIC_STATUS", "ENGLISH_LANGUAGE_LEARNER_STATUS"))
-# Indiana_Demographics_2022[,SCHOOL_YEAR:="2022"][,VALID_CASE:="VALID_CASE"]
-# setkey(Indiana_Demographics_2022, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
-# setkey(Indiana_Data_LONG_2022, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
+### Prepare Indiana_Demographics_2022
+setnames(Indiana_Demographics_2022, c("STUDENT_ID", "ETHNICITY", "SPECIAL_EDUCATION_STATUS", "SOCIO_ECONOMIC_STATUS", "ENGLISH_LANGUAGE_LEARNER_STATUS", "GENDER"))
+Indiana_Demographics_2022[,SCHOOL_YEAR:="2022"][,VALID_CASE:="VALID_CASE"]
+setkey(Indiana_Demographics_2022, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
+setkey(Indiana_Data_LONG_2022, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 
-# ### Merge in demographics
-# Indiana_Data_LONG_2022 <- Indiana_Demographics_2022[Indiana_Data_LONG_2022]
+### Merge in demographics
+Indiana_Data_LONG_2022 <- Indiana_Demographics_2022[Indiana_Data_LONG_2022]
 
-# ### Prepare Indiana_Gender_2022
-# Indiana_Gender[,STN:=NULL]
-# setnames(Indiana_Gender, c("SCHOOL_YEAR", "STUDENT_ID", "GENDER"))
-# Indiana_Gender[GENDER=="F", GENDER:="Female"]
-# Indiana_Gender[GENDER=="M", GENDER:="Male"]
-# Indiana_Gender_2022 <- Indiana_Gender[SCHOOL_YEAR=="2022"]
-# Indiana_Gender_2022[, VALID_CASE:="VALID_CASE"]
-# setkey(Indiana_Gender_2022, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
-
-# ### Merge in demographics
-
-# Indiana_Data_LONG_2022 <- Indiana_Gender_2022[Indiana_Data_LONG_2022]
-
-# setcolorder(Indiana_Data_LONG_2022, c(4,13,1,11,2,12,10,9,3,5,6,7,8))
+### Tidy up column order
+setcolorder(Indiana_Data_LONG_2022, c(8, 13, 7, 11, 1, 12, 2, 3, 4, 5, 6, 9, 10))
 
 ### Take highest score for duplicates
-
 setkey(Indiana_Data_LONG_2022, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID, SCALE_SCORE)
 setkey(Indiana_Data_LONG_2022, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
 Indiana_Data_LONG_2022[which(duplicated(Indiana_Data_LONG_2022, by=key(Indiana_Data_LONG_2022)))-1, VALID_CASE:="INVALID_CASE"]
 
+### Setkey final time
 setkey(Indiana_Data_LONG_2022, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
 
 ### Save results
-
 save(Indiana_Data_LONG_2022, file="Data/Indiana_Data_LONG_2022.Rdata")
