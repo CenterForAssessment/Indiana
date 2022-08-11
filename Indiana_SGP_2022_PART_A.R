@@ -32,6 +32,7 @@ SGPstateData <- SGPmatrices::addBaselineMatrices("IN", "2022")
 ### NULL out assessment transition in 2019 (since already dealt with)
 SGPstateData[["IN"]][["Assessment_Program_Information"]][["Assessment_Transition"]] <- NULL
 SGPstateData[["IN"]][["Assessment_Program_Information"]][["Scale_Change"]] <- NULL
+SGPstateData[["IN"]][["SGP_Configuration"]][["print.other.gp"]] <- TRUE
 
 ###   Read in BASELINE percentiles configuration scripts and combine
 source("SGP_CONFIG/2022/PART_A/ELA.R")
@@ -59,7 +60,7 @@ TMP_IN_SGP <- abcSGP(
         save.intermediate.results = FALSE,
         parallel.config = list(
 				BACKEND = "PARALLEL",
-				WORKERS=list(BASELINE_PERCENTILES=8))
+				WORKERS=list(BASELINE_PERCENTILES=2))
 )
 
 #####
