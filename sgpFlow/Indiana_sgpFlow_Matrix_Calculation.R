@@ -8,7 +8,7 @@ require(sgpFlow)
 require(data.table)
 
 # Load data
-load("../Data/Indiana_SGP.Rdata")
+load("Data/Indiana_Data_LONG_2024.Rdata")
 
 # Parameters
 num_cores <- parallel::detectCores() - 1
@@ -25,8 +25,7 @@ IN_Super_Cohort.config <- c(MATHEMATICS_Super_Cohort.config, ELA_Super_Cohort.co
 
 # Create sgpFlow matrices
 IN_sgpFlow_Matrices <- createMatrices(
-     data_for_matrices=Indiana_SGP,
-     state="IN",
+     data_for_matrices=Indiana_Data_LONG_2024,
      matrix.sgp.config=IN_Matrix.config,
      super_cohort.sgp.config=IN_Super_Cohort.config,
      super_cohort_base_years=c("2021", "2022", "2023", "2024"),

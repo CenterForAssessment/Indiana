@@ -22,7 +22,7 @@ if (!exists("SBAC_csem_data")) {
 
 ### Create long data
 variables.to.keep <- c("VALID_CASE", "CONTENT_AREA", "YEAR", "GRADE", "ID", "SCALE_SCORE", "ACHIEVEMENT_LEVEL")
-Indiana_Data_LONG_2024 <- Indiana_SGP@Data[VALID_CASE=="VALID_CASE" & YEAR %in% c("2023", "2024"), variables.to.keep, with=FALSE]
+Indiana_Data_LONG_2024 <- Indiana_SGP@Data[VALID_CASE=="VALID_CASE" & YEAR %in% c("2021", "2022", "2023", "2024"), variables.to.keep, with=FALSE]
 
 ### Add in CSEM data
 Indiana_Data_LONG_2024[,SCALE_SCORE_DECILE:=getDecile(SCALE_SCORE), keyby=c("YEAR", "CONTENT_AREA", "GRADE")]

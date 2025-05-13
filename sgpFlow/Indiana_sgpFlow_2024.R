@@ -42,4 +42,3 @@ Indiana_sgpFlow <- sgpFlow(
                     sgp_object = Indiana_Data_LONG_2024,
                     sgpFlow.config = sgpFlow.config,
                     projection.splineMatrices = projection.splineMatrices)
-
