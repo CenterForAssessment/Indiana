@@ -44,8 +44,16 @@ setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, 
 setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
 Indiana_Data_LONG_2026[which(duplicated(Indiana_Data_LONG_2026, by=key(Indiana_Data_LONG_2026)))-1, VALID_CASE:="INVALID_CASE"]
 
-### Setkey final time
-setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
+# Create SCALE_SCORE_OLD variable (2026 NEW scale -> OLD scale)
+load("Data/Indiana_Data_LONG_2025.Rdata")
+tmp.equate.data.long <- SGP::prepareSGP(rbindlist(list(Indiana_Data_LONG_2025, Indiana_Data_LONG_2026), use.names=FALSE, fill=TRUE), state="IN")@Data
+tmp.equate.functions <- SGP:::equateSGP(tmp.equate.data.long, state="IN", current.year=2026, equating.method="equipercentile")
+for (content_area.iter in c("ELA", "MATHEMATICS")) {
+    for (grade.iter in as.character(3:8)) {
+        Indiana_Data_LONG_2026[VALID_CASE == "VALID_CASE" & CONTENT_AREA == content_area.iter & GRADE_ID == grade.iter, SCALE_SCORE_OLD_SCALE := tmp.equate.functions[[paste(content_area.iter, "2026", sep=".")]][[paste("GRADE", grade.iter, sep="_")]][["EQUIPERCENTILE"]][["NEW_TO_OLD"]][["interpolated_function"]](SCALE_SCORE)]
+    }
+}
 
-### Save results
+### setkey final time and save
+setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID)
 save(Indiana_Data_LONG_2026, file="Data/Indiana_Data_LONG_2026.Rdata")

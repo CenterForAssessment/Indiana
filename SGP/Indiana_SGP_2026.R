@@ -26,7 +26,7 @@ IN_CONFIG <- c(ELA_2026.config, MATHEMATICS_2026.config)
 parallel.config <- list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=4, BASELINE_PERCENTILES=4, PROJECTIONS=4, LAGGED_PROJECTIONS=4, SGP_SCALE_SCORE_TARGETS=4))
 
 #####
-###   Run updateSGP analysis
+###   STEP 1: Run updateSGP analysis, cohort referenced SGPs
 #####
 
 Indiana_SGP <- updateSGP(
@@ -35,8 +35,28 @@ Indiana_SGP <- updateSGP(
         steps = c("prepareSGP", "analyzeSGP", "combineSGP", "outputSGP"),
         sgp.config = IN_CONFIG,
         sgp.percentiles = TRUE,
-        sgp.projections = TRUE,
-        sgp.projections.lagged = TRUE,
+        sgp.projections = FALSE, ## Scale change in 2026
+        sgp.projections.lagged = FALSE, ## Scale change in 2026
+        sgp.percentiles.baseline = FALSE, ## Taken care of in next step
+        sgp.projections.baseline = FALSE, ## Taken care of in next step
+        sgp.projections.lagged.baseline = FALSE, ## Taken care of in next step
+        save.intermediate.results = FALSE,
+        parallel.config = parallel.config
+)
+
+#####
+###   STEP 2: Run abcSGP analysis, baseline referenced SGPs
+#####
+Indiana_SGP@Data[YEAR<"2026", SCALE_SCORE_OLD_SCALE:=SCALE_SCORE]
+setnames(Indiana_SGP@Data, c("SCALE_SCORE", "SCALE_SCORE_OLD_SCALE"), c("SCALE_SCORE_OLD_SCALE", "SCALE_SCORE"))
+
+Indiana_SGP <- abcSGP(
+        sgp_object = Indiana_SGP,
+        steps = c("prepareSGP", "analyzeSGP", "combineSGP", "outputSGP"),
+        sgp.config = IN_CONFIG,
+        sgp.percentiles = FALSE,
+        sgp.projections = FALSE,
+        sgp.projections.lagged = FALSE,
         sgp.percentiles.baseline = TRUE,
         sgp.projections.baseline = TRUE,
         sgp.projections.lagged.baseline = TRUE,
