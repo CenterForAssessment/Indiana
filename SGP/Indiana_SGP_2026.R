@@ -6,6 +6,7 @@
 
 ###   Load packages
 require(SGP)
+require(data.table)
 require(SGPmatrices)
 
 ###   Load data
@@ -32,7 +33,7 @@ parallel.config <- list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=4, BASELINE
 Indiana_SGP <- updateSGP(
         what_sgp_object = Indiana_SGP,
         with_sgp_data_LONG = Indiana_Data_LONG_2026,
-        steps = c("prepareSGP", "analyzeSGP", "combineSGP", "outputSGP"),
+        steps = c("prepareSGP", "analyzeSGP", "combineSGP"),
         sgp.config = IN_CONFIG,
         sgp.percentiles = TRUE,
         sgp.projections = FALSE, ## Scale change in 2026
@@ -49,6 +50,8 @@ Indiana_SGP <- updateSGP(
 #####
 Indiana_SGP@Data[YEAR<"2026", SCALE_SCORE_OLD_SCALE:=SCALE_SCORE]
 setnames(Indiana_SGP@Data, c("SCALE_SCORE", "SCALE_SCORE_OLD_SCALE"), c("SCALE_SCORE_OLD_SCALE", "SCALE_SCORE"))
+SGPstateData[["IN"]][["Achievement"]][["Knots_Boundaries"]][["ELA.2026"]] <- NULL
+SGPstateData[["IN"]][["Achievement"]][["Knots_Boundaries"]][["MATHEMATICS.2026"]] <- NULL
 
 Indiana_SGP <- abcSGP(
         sgp_object = Indiana_SGP,
@@ -60,6 +63,7 @@ Indiana_SGP <- abcSGP(
         sgp.percentiles.baseline = TRUE,
         sgp.projections.baseline = TRUE,
         sgp.projections.lagged.baseline = TRUE,
+	sgp.target.scale.scores=FALSE = TRUE,
         save.intermediate.results = FALSE,
         parallel.config = parallel.config
 )
