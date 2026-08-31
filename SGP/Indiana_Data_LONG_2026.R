@@ -7,6 +7,26 @@
 ### Load SGP Package:
 require(data.table)
 
+### Cutscores (official 2026 NEW scale; from SGPstateData IN, commented NEW_SCALE lists)
+### SGPstateData 2026 cuts remain on the OLD scale for projections.
+		ELA.2026.NEW_SCALE=list(
+			GRADE_3=c(364, 413, 456),
+			GRADE_4=c(388, 434, 484),
+			GRADE_5=c(398, 449, 503),
+			GRADE_6=c(408, 462, 518),
+			GRADE_7=c(418, 474, 530),
+			GRADE_8=c(431, 484, 540))
+
+		MATHEMATICS.2026.NEW_SCALE=list(
+			GRADE_3=c(468, 485, 512),
+			GRADE_4=c(489, 505, 541),
+			GRADE_5=c(505, 531, 573),
+			GRADE_6=c(525, 561, 617),
+			GRADE_7=c(549, 605, 669),
+			GRADE_8=c(585, 661, 738))
+
+		achievement.level.labels <- c("Below Proficiency", "Approaching Proficiency", "At Proficiency", "Above Proficiency")
+		tmp.cutscores <- list(ELA=ELA.2026.NEW_SCALE, MATHEMATICS=MATHEMATICS.2026.NEW_SCALE)
 
 ### Load base data files
 Indiana_Data_LONG_2026 <- fread("Data/Base_Files/ILEARN_2026_Damian_Export_081926.csv", colClasses=rep("character", 5))
@@ -36,8 +56,14 @@ setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 Indiana_Data_LONG_2026 <- Indiana_Demographics_2026[Indiana_Data_LONG_2026]
 Indiana_Data_LONG_2026[,ETHNICITY:=as.factor(ETHNICITY)]
 
+### Add in ACHIEVEMENT_LEVEL (SCALE_SCORE is on the NEW scale; use NEW_SCALE cuts above)
+Indiana_Data_LONG_2026[, ACHIEVEMENT_LEVEL := as.character(factor(
+	findInterval(SCALE_SCORE, tmp.cutscores[[CONTENT_AREA[1]]][[paste("GRADE", GRADE_ID[1], sep="_")]])+1L,
+	levels=seq_along(achievement.level.labels), labels=achievement.level.labels)),
+	by=c("CONTENT_AREA", "GRADE_ID")]
+
 ### Tidy up column order
-setcolorder(Indiana_Data_LONG_2026, c(8, 11, 7, 9, 1, 10, 2, 3, 4, 5, 6))
+setcolorder(Indiana_Data_LONG_2026, c(8, 11, 7, 9, 1, 10, 12, 2, 3, 4, 5, 6))
 
 ### Take highest score for duplicates
 setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, CONTENT_AREA, GRADE_ID, STUDENT_ID, SCALE_SCORE)

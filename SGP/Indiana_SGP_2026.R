@@ -1,6 +1,7 @@
 ################################################################################
 ###                                                                          ###
 ###                Indiana SGP analyses for 2026                             ###
+###                NOTE: Archived old SGP object                             ###
 ###                                                                          ###
 ################################################################################
 
@@ -10,8 +11,12 @@ require(data.table)
 require(SGPmatrices)
 
 ###   Load data
-load("Data/Indiana_SGP.Rdata")
+load("Data/Indiana_SGP_LONG_Data.Rdata")
 load("Data/Indiana_Data_LONG_2026.Rdata")
+
+###   Create new LONG data from > 2022
+Indiana_Data_LONG <- rbindlist(list(Indiana_SGP_LONG_Data, Indiana_Data_LONG_2026), use.names=TRUE, fill=TRUE)
+setkey(Indiana_Data_LONG, VALID_CASE, CONTENT_AREA, SCHOOL_YEAR, GRADE_ID, STUDENT_ID)
 
 ###   Add Baseline matrices to SGPstateData
 SGPstateData <- addBaselineMatrices("IN", "2026")
@@ -27,12 +32,11 @@ IN_CONFIG <- c(ELA_2026.config, MATHEMATICS_2026.config)
 parallel.config <- list(BACKEND="PARALLEL", WORKERS=list(PERCENTILES=4, BASELINE_PERCENTILES=4, PROJECTIONS=4, LAGGED_PROJECTIONS=4, SGP_SCALE_SCORE_TARGETS=4))
 
 #####
-###   STEP 1: Run updateSGP analysis, cohort referenced SGPs
+###   STEP 1: Run abcSGP analysis, cohort referenced SGPs only
 #####
 
-Indiana_SGP <- updateSGP(
-        what_sgp_object = Indiana_SGP,
-        with_sgp_data_LONG = Indiana_Data_LONG_2026,
+Indiana_SGP <- abcSGP(
+        sgp_object = Indiana_Data_LONG,
         steps = c("prepareSGP", "analyzeSGP", "combineSGP"),
         sgp.config = IN_CONFIG,
         sgp.percentiles = TRUE,
@@ -63,7 +67,7 @@ Indiana_SGP <- abcSGP(
         sgp.percentiles.baseline = TRUE,
         sgp.projections.baseline = TRUE,
         sgp.projections.lagged.baseline = TRUE,
-	sgp.target.scale.scores=FALSE = TRUE,
+	sgp.target.scale.scores = TRUE,
         save.intermediate.results = FALSE,
         parallel.config = parallel.config
 )
