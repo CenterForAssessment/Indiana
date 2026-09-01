@@ -32,7 +32,6 @@ require(data.table)
 Indiana_Data_LONG_2026 <- fread("Data/Base_Files/ILEARN_2026_Damian_Export_081926.csv", colClasses=rep("character", 5))
 Indiana_Demographics_2026 <- fread("Data/Base_Files/ILEARN_2026_demographics.csv", colClasses=rep("character", 7))
 
-
 ### Prepare Data
 setnames(Indiana_Data_LONG_2026, c("STN", "STUDENT_ID", "GRADE_ID", "ELA_SCALE_SCORE", "MATH_SCALE_SCORE"))
 Indiana_Data_LONG_2026[,"STN":=NULL]
@@ -46,14 +45,15 @@ Indiana_Data_LONG_2026[,SCALE_SCORE:=as.numeric(SCALE_SCORE)]
 Indiana_Data_LONG_2026[,GRADE_ID:=as.character(as.numeric(GRADE_ID))]
 
 ### Prepare Indiana_Demographics_2026
-setnames(Indiana_Demographics_2026, c("STUDENT_ID", "GRADE_ID", "ETHNICITY", "SPECIAL_EDUCATION_STATUS", "SOCIO_ECONOMIC_STATUS", "ENGLISH_LANGUAGE_LEARNER_STATUS", "GENDER"))
+setnames(Indiana_Demographics_2026, c("STUDENT_ID", "GRADE_ID", "ETHNICITY", "GENDER", "SPECIAL_EDUCATION_STATUS", "SOCIO_ECONOMIC_STATUS", "ENGLISH_LANGUAGE_LEARNER_STATUS"))
 Indiana_Demographics_2026[,"GRADE_ID":=NULL]
 Indiana_Demographics_2026[,SCHOOL_YEAR:="2026"][,VALID_CASE:="VALID_CASE"]
+Indiana_Demographics_2026[SPECIAL_EDUCATION_STATUS=="",SPECIAL_EDUCATION_STATUS:="Unknown"]
 setkey(Indiana_Demographics_2026, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 
 ### Merge in demographics
-Indiana_Data_LONG_2026 <- Indiana_Demographics_2026[Indiana_Data_LONG_2026]
+Indiana_Data_LONG_2026 <- Indiana_Data_LONG_2026[Indiana_Demographics_2026]
 Indiana_Data_LONG_2026[,ETHNICITY:=as.factor(ETHNICITY)]
 
 ### Add in ACHIEVEMENT_LEVEL (SCALE_SCORE is on the NEW scale; use NEW_SCALE cuts above)
@@ -72,7 +72,7 @@ Indiana_Data_LONG_2026[which(duplicated(Indiana_Data_LONG_2026, by=key(Indiana_D
 
 # Create SCALE_SCORE_OLD variable (2026 NEW scale -> OLD scale)
 load("Data/Indiana_Data_LONG_2025.Rdata")
-tmp.equate.data.long <- SGP::prepareSGP(rbindlist(list(Indiana_Data_LONG_2025, Indiana_Data_LONG_2026), use.names=FALSE, fill=TRUE), state="IN")@Data
+tmp.equate.data.long <- SGP::prepareSGP(rbindlist(list(Indiana_Data_LONG_2025, Indiana_Data_LONG_2026), use.names=TRUE, fill=TRUE), state="IN")@Data
 tmp.equate.functions <- SGP:::equateSGP(tmp.equate.data.long, state="IN", current.year=2026, equating.method="equipercentile")
 for (content_area.iter in c("ELA", "MATHEMATICS")) {
     for (grade.iter in as.character(3:8)) {
