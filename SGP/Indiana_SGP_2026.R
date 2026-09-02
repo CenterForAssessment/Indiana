@@ -15,7 +15,7 @@ load("Data/Indiana_SGP_LONG_Data.Rdata")
 load("Data/Indiana_Data_LONG_2026.Rdata")
 
 ###   Create new LONG data from > 2022
-Indiana_Data_LONG <- rbindlist(list(Indiana_SGP_LONG_Data, Indiana_Data_LONG_2026), use.names=TRUE, fill=TRUE)
+Indiana_Data_LONG <- rbindlist(list(Indiana_SGP_LONG_Data[SCHOOL_YEAR<"2026"], Indiana_Data_LONG_2026), use.names=TRUE, fill=TRUE)
 setkey(Indiana_Data_LONG, VALID_CASE, CONTENT_AREA, SCHOOL_YEAR, GRADE_ID, STUDENT_ID)
 
 ###   Add Baseline matrices to SGPstateData
@@ -69,6 +69,7 @@ Indiana_SGP <- abcSGP(
         sgp.projections.lagged.baseline = TRUE,
 	sgp.target.scale.scores = TRUE,
         save.intermediate.results = FALSE,
+        outputSGP.output.type = c("LONG_Data", "LONG_FINAL_YEAR_Data"),
         parallel.config = parallel.config
 )
 
