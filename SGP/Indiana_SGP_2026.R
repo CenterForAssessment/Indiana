@@ -59,7 +59,7 @@ SGPstateData[["IN"]][["Achievement"]][["Knots_Boundaries"]][["MATHEMATICS.2026"]
 
 Indiana_SGP <- abcSGP(
         sgp_object = Indiana_SGP,
-        steps = c("prepareSGP", "analyzeSGP", "combineSGP", "outputSGP"),
+        steps = c("prepareSGP", "analyzeSGP", "combineSGP"),
         sgp.config = IN_CONFIG,
         sgp.percentiles = FALSE,
         sgp.projections = FALSE,
@@ -72,6 +72,8 @@ Indiana_SGP <- abcSGP(
         outputSGP.output.type = c("LONG_Data", "LONG_FINAL_YEAR_Data"),
         parallel.config = parallel.config
 )
+
+### 
 
 ###   Save results
 save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
