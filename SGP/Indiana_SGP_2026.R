@@ -82,18 +82,16 @@ tmp.data <- copy(Indiana_SGP@Data)
 for (content_area.iter in c("ELA", "MATHEMATICS")) {
     for (grade.iter in 3:7) {
         link_fn <- Linkages_2026[[paste(content_area.iter, "2026", sep=".")]][[paste("GRADE", grade.iter+1, sep="_")]][["EQUIPERCENTILE"]][["OLD_TO_NEW"]][["interpolated_function"]]
-        tmp.data[VALID_CASE == "VALID_CASE" & YEAR == "2026" & CONTENT_AREA == content_area.iter & GRADE == as.character(grade.iter), SCALE_SCORE_SGP_TARGET_BASELINE_4_YEAR_PROJ_YEAR_1_CURRENT_NEW_SCALE:=link_fn(ceiling(SCALE_SCORE_SGP_TARGET_BASELINE_4_YEAR_PROJ_YEAR_1_CURRENT_OLD_SCALE))]
-        tmp.data[VALID_CASE == "VALID_CASE" & YEAR == "2026" & CONTENT_AREA == content_area.iter & GRADE == as.character(grade.iter), SCALE_SCORE_SGP_TARGET_BASELINE_3_YEAR_PROJ_YEAR_1_CURRENT_NEW_SCALE:=link_fn(ceiling(SCALE_SCORE_SGP_TARGET_BASELINE_3_YEAR_PROJ_YEAR_1_CURRENT_OLD_SCALE))]
+        tmp.data[VALID_CASE == "VALID_CASE" & YEAR == "2026" & CONTENT_AREA == content_area.iter & GRADE == as.character(grade.iter), SCALE_SCORE_SGP_TARGET_BASELINE_4_YEAR_PROJ_YEAR_1_CURRENT_NEW_SCALE:=link_fn(ceiling(SCALE_SCORE_SGP_TARGET_BASELINE_4_YEAR_PROJ_YEAR_1_CURRENT))]
+        tmp.data[VALID_CASE == "VALID_CASE" & YEAR == "2026" & CONTENT_AREA == content_area.iter & GRADE == as.character(grade.iter), SCALE_SCORE_SGP_TARGET_BASELINE_3_YEAR_PROJ_YEAR_1_CURRENT_NEW_SCALE:=link_fn(ceiling(SCALE_SCORE_SGP_TARGET_BASELINE_3_YEAR_PROJ_YEAR_1_CURRENT))]
     }
 }
 
+setkey(tmp.data, VALID_CASE, CONTENT_AREA, YEAR, GRADE, ID)
 Indiana_SGP@Data <- tmp.data
 
 ### outputSGP results to LONG_Data and LONG_FINAL_YEAR_Data
-outputSGP(
-        Indiana_SGP,
-        outputSGP.output.type = c("LONG_Data", "LONG_FINAL_YEAR_Data")
-)
+outputSGP(Indiana_SGP, output.type = c("LONG_Data", "LONG_FINAL_YEAR_Data"))
 
 ###   Save results
 save(Indiana_SGP, file="Data/Indiana_SGP.Rdata")
