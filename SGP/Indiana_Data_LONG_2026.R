@@ -49,8 +49,8 @@ setnames(Indiana_Demographics_2026, c("STUDENT_ID", "GRADE_ID", "ETHNICITY", "GE
 Indiana_Demographics_2026[,"GRADE_ID":=NULL]
 Indiana_Demographics_2026[,SCHOOL_YEAR:="2026"][,VALID_CASE:="VALID_CASE"]
 Indiana_Demographics_2026[SPECIAL_ED_STATUS=="",SPECIAL_ED_STATUS:="Unknown"]
-Indiana_Demographics_2026[SOCIO_ECONOMIC_STATUS=="",SOCIO_ECONOMIC_STATUS:="Unknown"]
-Indiana_Demographics_2026[ENGLISH_LANGUAGE_LEARNER_STATUS=="", ENGLISH_LANGUAGE_LEARNER_STATUS:="Unknown"]
+Indiana_Demographics_2026[SOCIO_ECON_STATUS=="",SOCIO_ECON_STATUS:="Unknown"]
+Indiana_Demographics_2026[ENGLISH_LEARNER_STATUS=="", ENGLISH_LEARNER_STATUS:="Unknown"]
 setkey(Indiana_Demographics_2026, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 setkey(Indiana_Data_LONG_2026, VALID_CASE, SCHOOL_YEAR, STUDENT_ID)
 
